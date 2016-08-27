@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>體脂肪計算器</title>
+  <script src="js/jquery-3.1.0.min.js"></script>
+
+  <style>
+
+  .container {
+    width: 900px;
+    margin: 0 auto;
+  }
+
+  section {
+    display: block;
+    height: 200px;
+  }
+
+  section.bmi {
+    background: #1D90CC;
+    border-top-left-radius: 6px;
+    border-top-right-radius: 6px;
+  }
+
+  section.bodyfat{
+    background: #FF3E4E;
+    border-bottom-left-radius: 6px;
+    border-bottom-right-radius: 6px;
+  }
+
+  .left-section {
+    width: 50%;
+    height: 100%;
+    float: left;
+    text-align: center;
+  }
+
+  .left-section h3 {
+    margin-top: 50px;
+    color: #fff;
+    letter-spacing: 6px;
+  }
+
+  .left-section input {
+    border: none;
+    color: #fff;
+    background: none;
+    font-style: italic;
+    text-align: center;
+    font-size: 24pt;
+  }
+
+  .right-section {
+    width: 50%;
+    height: 100%;
+    float: right;
+    text-align: center;
+  }
+
+  .label {
+    color: #fff;
+  }
+
+  .input {
+    margin: 20px 0;
+  }
+
+  .input h6 {
+    margin: 6px 0;
+  }
+
+  </style>
+</head>
+
+<body>
+
+<div class="container">
+  <!-- BMI Section -->
+    <section class="bmi">
+      <div class="left-section">
+        <h3 class="title">BMI</h3>
+        <input type="text" id="bmi" disabled>
+      </div>
+      <div class="right-section">
+        <div class="input">
+          <h6 class="label">身高（公尺）</h6>
+          <input type="number" id="height" min="0">
+        </div>
+
+        <div class="input">
+          <h6 class="label">體重（公斤）</h6>
+          <input type="number" id="weight" min="0">
+        </div>
+
+        <div class="button">
+          <button id="bmi-cal">計算 BMI</button>
+          <button id="bmi-reset">重設</button>
+        </div>
+      </div>
+    </section>
+  <!-- Bodyfat Section -->
+    <section class="bodyfat">
+      <div class="left-section">
+        <h3 class="title">Body Fat</h3>
+        <input type="text" id="bodyfat" disabled>
+      </div>
+      <div class="right-section">
+        <div class="input">
+          <h6 class="label">年齡</h6>
+          <input type="number" id="age" min="0">
+        </div>
+
+        <div class="input">
+          <h6 class="label">性別</h6>
+          <select id="gender">
+            <option></option>
+            <option value="1">男性</option>
+            <option value="0">女性</option>
+          </select>
+        </div>
+
+        <div class="button">
+          <button id="body-cal">計算體脂肪率</button>
+          <button id="body-reset">重設</button>
+        </div>
+
+
+      </div>
+    </section>
+</div>
+
+<script>
+
+$(function(){
+  // BMI Section //
+  $('#bmi-cal').on('click',function(){
+    var h = $('#height').val(),
+        w = $('#weight').val();
+
+    if ( h == '' ) {
+      alert ('請輸入身高');
+    }
+    else if ( h > 3 ){
+      alert ('身高請輸入公尺');
+    }
+    else if ( w == '' ){
+      alert ('請輸入體重');
+    }
+    else {
+     var bmi = w / ( h * h );
+      function formatFloat(num, pos)
+      {
+        var size = Math.pow(10, pos);
+        return Math.round(num * size) / size;
+      }
+
+      $('#bmi').val(formatFloat(bmi, 3));
+    }
+  });
+  $('#bmi-reset').on('click',function(){
+    $('#height').val('');
+    $('#weight').val('');
+    $('#bmi').val('');
+  });
+
+  // Bodyfar Section //
+  $('#body-cal').on('click',function(){
+    var bmi = $('#bmi').val(),
+        a = $('#age').val(),
+        g = $('#gender').val();
+
+    if ( bmi == '' ) {
+      alert ('請先計算 BMI');
+    } else if ( a == '' ) {
+      alert ('請輸入年齡');
+    } else if ( g == '' ) {
+      alert ('請選擇性別');
+    } else {
+      var fat = (1.2 * bmi) + (0.23 * a)- 5.4 - (10.8 * g);
+      function formatFloat(num, pos) {
+        var size = Math.pow(10, pos);
+        return Math.round(num * size) / size;
+      }
+      $('#bodyfat').val(formatFloat(fat,3) + "%");
+    }
+  });
+  $('#body-reset').on('click',function(){
+    $('#age').val('');
+    $('#gender').val('');
+  });
+
+});
+
+
+
+
+
+
+</script>
+
+
+
+</body>
+
+
+
+
+
+
+
+</html>
